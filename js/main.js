@@ -1,7 +1,12 @@
+//import * as myModule from '/js/voiceCommand.js'
 //this game will have only 1 state
+var voiceCmd = null;
 var GameState = {
   //load the game assets before the game starts
   preload: function() {
+    // review if there is library
+    console.log("the module name is", VoiceCMD)
+    voiceCmd = new VoiceCMD();
     this.game.load.image('backyard', 'assets/images/backyard.png');    
     this.game.load.image('apple', 'assets/images/apple.png');    
     this.game.load.image('candy', 'assets/images/candy.png');    
@@ -9,6 +14,22 @@ var GameState = {
     this.game.load.image('toy', 'assets/images/rubber_duck.png');    
     this.game.load.image('arrow', 'assets/images/arrow.png');   
     this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1); 
+    var self = this;
+     voiceCmd.subscribeVoiceEvent(function(cmd){
+      console.log("the value of voice command is---> ",  cmd);
+      if(cmd.voiceCmd === "hello"){
+         responsiveVoice.speak("Hellooo Jhonny.");
+         self.pet.animations.play('funnyfaces');
+      }else if(cmd.voiceCmd === "look at me"){
+        console.log("look at me");
+         responsiveVoice.speak("OK");
+         self.pet.animations.play('funnyfaces');
+      }else if (cmd.voiceCmd === "go to"){
+         responsiveVoice.speak("OK");
+         self.pet.animations.play('funnyfaces');
+      }
+    });
+
   },
   //executed after everything is loaded
   create: function() {
@@ -69,6 +90,7 @@ var GameState = {
     this.statsDecreaser.timer.start();
     
     this.uiBlocked = false;
+    
   },
 
   //rotate the pet
