@@ -6,29 +6,45 @@ var GameState = {
   preload: function() {
     // review if there is library
     console.log("the module name is", VoiceCMD)
-    voiceCmd = new VoiceCMD();
+    
     this.game.load.image('backyard', 'assets/images/backyard.png');    
     this.game.load.image('apple', 'assets/images/apple.png');    
     this.game.load.image('candy', 'assets/images/candy.png');    
     this.game.load.image('rotate', 'assets/images/rotate.png');    
     this.game.load.image('toy', 'assets/images/rubber_duck.png');    
     this.game.load.image('arrow', 'assets/images/arrow.png');   
+    
     this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1); 
+
     var self = this;
-     voiceCmd.subscribeVoiceEvent(function(cmd){
+    // voice command
+     voiceCmd = new VoiceCMD();
+     // subscribe voice command
+voiceCmd.subscribeVoiceEvent(function(cmd){
+  
       console.log("the value of voice command is---> ",  cmd);
       if(cmd.voiceCmd === "hello"){
+         
          responsiveVoice.speak("Hellooo Jhonny.");
+      
+
          self.pet.animations.play('funnyfaces');
       }else if(cmd.voiceCmd === "look at me"){
         console.log("look at me");
          responsiveVoice.speak("OK");
          self.pet.animations.play('funnyfaces');
-      }else if (cmd.voiceCmd === "go to"){
+      
+     }else if (cmd.voiceCmd === "go to the box"){
+         
          responsiveVoice.speak("OK");
-         self.pet.animations.play('funnyfaces');
+          // self.pet.body.velocity.x = 150;
+        var petMovement = game.add.tween(self.pet);
+            petMovement.to({x: 325, y: 436}, 700);
+            petMovement.start();
       }
+
     });
+     
 
   },
   //executed after everything is loaded
@@ -90,7 +106,9 @@ var GameState = {
     this.statsDecreaser.timer.start();
     
     this.uiBlocked = false;
-    
+    var self = this;
+
+
   },
 
   //rotate the pet
@@ -143,16 +161,21 @@ var GameState = {
       //position of the user input
       var x = event.position.x;
       var y = event.position.y;
+      console.log("the pos of Appel is x:"+ x + " y-->"+ y)
 
       //create element in this place
       var newItem = this.game.add.sprite(x, y, this.selectedItem.key);
+
       newItem.anchor.setTo(0.5);
       newItem.customParams = this.selectedItem.customParams;
 
       //the pet will move to grab the item
       this.uiBlocked = true;
       var petMovement = game.add.tween(this.pet);
+      // move pet to new positon
+      
       petMovement.to({x: x, y: y}, 700);
+      
       petMovement.onComplete.add(function(){
         this.uiBlocked = false;
 

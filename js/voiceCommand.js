@@ -14,13 +14,14 @@ var VoiceCMD = function(){
     self._initCMD();
     // custom param
 }
+
 VoiceCMD.prototype.subscribeVoiceEvent = function (fnEventHandler){
     document.addEventListener("myEvent",fnEventHandler,false);
 }
 // function of class
 VoiceCMD.prototype._initCMD = function (){
     if (annyang) {
-        console.log("init Voide")
+        console.log("init Voide Comand")
         annyang.addCommands(this._getCmds());
         // Start listening. You can call this here, or attach this call to an event, button, etc.
         annyang.start();
@@ -36,15 +37,23 @@ VoiceCMD.prototype._getCmds = function(){
                 document.dispatchEvent(self.evt);
             },
             "look at me": function(){
-                console.log("look at me!!!!!!!!!!!!")
+                console.log("look at me!!!!!!!!!!!!");
                 self.evt.voiceCmd = "look at me"
                 document.dispatchEvent(self.evt);
             },
-             "go to *": function(){
-                console.log("go to !!!")
-                self.evt.voiceCmd = "go to"
+             "go to the box": function(){
+                console.log("go to the box")
+                self.evt.voiceCmd = "go to the box"
+                document.dispatchEvent(self.evt);
+            },
+            "go to bed": function(){
+                console.log("go to bed")
+                self.evt.voiceCmd = "go to bed"
                 document.dispatchEvent(self.evt);
             }
+
+
+
         };
 
 

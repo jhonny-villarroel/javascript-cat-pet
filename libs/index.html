@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<title>Learn Game Development at ZENVA.com</title>
+  	<!--Css -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<!--Java script Libraries -->
+		<script type="text/javascript" src="libs/jquery-3.2.1.min.js"></script>		
+		<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+		<script type="text/javascript" src="libs/phaser.js"></script>		
+		<script type="text/javascript" src="libs/annyang.min.js"></script>		
+	</head>
+	<body>  
+		<!-- include the main game file -->
+		<body>
+        <script type="text/javascript">
+        window.onload = function() {
+
+            //  Note that this html file is set to pull down Phaser 2.5.0 from the JS Delivr CDN.
+            //  Although it will work fine with this tutorial, it's almost certainly not the most current version.
+            //  Be sure to replace it with an updated version before you start experimenting with adding your own code.
+
+            var game = new Phaser.Game(800, 800, Phaser.AUTO, '', {
+                preload: preload,
+                create: create,
+                update: update
+            });
+
+            var cursors;
+            var logo;
+
+            function preload () {
+                game.load.image('logo', 'ginger-cat-lazing.png');
+            }
+
+            function create () {
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+
+                logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+                logo.anchor.setTo(0.5, 0.5);
+
+                game.physics.arcade.enable(logo);
+
+                logo.body.collideWorldBounds = true;
+
+                cursors = game.input.keyboard.createCursorKeys();
+            }
+
+            function update() {
+                if (cursors.left.isDown) {
+                    logo.body.velocity.x = -150;
+                }
+                if (cursors.right.isDown) {
+                    logo.body.velocity.x = 150;
+                }
+                if (cursors.up.isDown) {
+                    logo.body.velocity.y = -150;
+                }
+                if (cursors.down.isDown) {
+                    logo.body.velocity.y = 150;
+                }
+            }
+        };
+        </script>
+    
+	</body>
+</html>
