@@ -33,6 +33,7 @@ voiceCmd.subscribeVoiceEvent(function(cmd){
         console.log("look at me");
          responsiveVoice.speak("OK");
          self.pet.animations.play('funnyfaces');
+         
       
      }else if (cmd.voiceCmd === "go to the box"){
          
@@ -44,8 +45,18 @@ voiceCmd.subscribeVoiceEvent(function(cmd){
       }
 
     });
-     
 
+      // TODO MAKE in a class
+       subscribeHeadTrackEvent(function(event){
+         console.log("the Head location is--->" + event.direction);
+         if(event.direction === "LEFT"){
+            self.pet.angle = 45;
+         }else if(event.direction === "RIGHT"){
+           self.pet.angle = -45;
+         }else if(event.direction === "CENTER"){
+           self.pet.angle = 0;
+         }
+       });
   },
   //executed after everything is loaded
   create: function() {
