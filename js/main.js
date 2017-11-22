@@ -1,26 +1,30 @@
 //import * as myModule from '/js/voiceCommand.js'
 //this game will have only 1 state
 var voiceCmd = null;
+
+var cursors;
+
 var GameState = {
   //load the game assets before the game starts
   preload: function() {
     // review if there is library
     console.log("the module name is", VoiceCMD)
     
-    this.game.load.image('backyard', 'assets/images/backyard.png');    
+    this.game.load.image('backyard', 'assets/images/backyard.png');  
+    this.game.load.image('box', 'assets/images/box.png'); 
     this.game.load.image('apple', 'assets/images/apple.png');    
     this.game.load.image('candy', 'assets/images/candy.png');    
     this.game.load.image('rotate', 'assets/images/rotate.png');    
     this.game.load.image('toy', 'assets/images/rubber_duck.png');    
     this.game.load.image('arrow', 'assets/images/arrow.png');   
-    
+
     this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1); 
 
     var self = this;
     // voice command
      voiceCmd = new VoiceCMD();
      // subscribe voice command
-voiceCmd.subscribeVoiceEvent(function(cmd){
+    voiceCmd.subscribeVoiceEvent(function(cmd){
   
       console.log("the value of voice command is---> ",  cmd);
       if(cmd.voiceCmd === "hello"){
@@ -71,9 +75,27 @@ voiceCmd.subscribeVoiceEvent(function(cmd){
     //custom properties of the pet
     this.pet.customParams = {health: 100, fun: 100};
 
+
+    // NEW CHANGES ...
+
+    // capture handler for keyboard events
+    cursors = game.input.keyboard.createCursorKeys();
+    // physic
+    game.physics.arcade.enable(this.pet);
+    // Set world limit
+    this.pet.body.collideWorldBounds = true;
+
+    // NEW CHANGES ...
+
     //draggable pet
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
+
+    this.box = this.game.add.sprite(250, 570, 'box');
+    this.box.anchor.setTo(0.5);
+    this.box.customParams = {health: 20};
+    this.box.inputEnabled = true;
+    this.box.events.onInputDown.add(this.pickItem, this);
 
     this.apple = this.game.add.sprite(72, 570, 'apple');
     this.apple.anchor.setTo(0.5);
@@ -98,7 +120,7 @@ voiceCmd.subscribeVoiceEvent(function(cmd){
     this.rotate.inputEnabled = true;
     this.rotate.events.onInputDown.add(this.rotatePet, this);
 
-    this.buttons = [this.apple, this.candy, this.toy, this.rotate];
+    this.buttons = [this.box, this.apple, this.candy, this.toy, this.rotate];
 
     //nothing selected
     this.selectedItem = null;
