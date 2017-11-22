@@ -30,16 +30,15 @@ var GameState = {
       if(cmd.voiceCmd === "hello"){
          
          responsiveVoice.speak("Hellooo Jhonny.");
-      
 
          self.pet.animations.play('funnyfaces');
-      }else if(cmd.voiceCmd === "look at me"){
+      } else if(cmd.voiceCmd === "look at me"){
         console.log("look at me");
+
          responsiveVoice.speak("OK");
          self.pet.animations.play('funnyfaces');
          
-      
-     }else if (cmd.voiceCmd === "go to the box"){
+     } else if (cmd.voiceCmd === "go to the box"){
          
          responsiveVoice.speak("OK");
           // self.pet.body.velocity.x = 150;
@@ -47,7 +46,6 @@ var GameState = {
             petMovement.to({x: 325, y: 436}, 700);
             petMovement.start();
       }
-
     });
 
       // TODO MAKE in a class
@@ -75,9 +73,7 @@ var GameState = {
     //custom properties of the pet
     this.pet.customParams = {health: 100, fun: 100};
 
-
-    // NEW CHANGES ...
-
+    // Using cursors
     // capture handler for keyboard events
     cursors = game.input.keyboard.createCursorKeys();
     // physic
@@ -85,13 +81,11 @@ var GameState = {
     // Set world limit
     this.pet.body.collideWorldBounds = true;
 
-    // NEW CHANGES ...
-
     //draggable pet
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
 
-    this.box = this.game.add.sprite(250, 570, 'box');
+    this.box = this.game.add.sprite(60, 350, 'box');
     this.box.anchor.setTo(0.5);
     this.box.customParams = {health: 20};
     this.box.inputEnabled = true;
@@ -140,13 +134,10 @@ var GameState = {
     
     this.uiBlocked = false;
     var self = this;
-
-
   },
 
   //rotate the pet
   rotatePet: function(sprite, event) {
-
     if(!this.uiBlocked) {
       this.uiBlocked = true;
 
@@ -160,13 +151,10 @@ var GameState = {
       petRotation.to({ angle: '-60' }, 500);
       petRotation.to({ angle: '+60' }, 500);
       
-      
-      
       petRotation.onComplete.add(function(){
         this.uiBlocked = false;
         sprite.alpha = 1;
         this.pet.customParams.fun += 10;
-
         //show updated stats
         this.refreshStats();
       }, this);
@@ -226,10 +214,9 @@ var GameState = {
             this.pet.customParams[stat] += newItem.customParams[stat];
           }
         }
-        
+
         //show updated stats
         this.refreshStats();
-
         //clear selection
         this.clearSelection();
       }, this);
@@ -272,6 +259,5 @@ var GameState = {
 
 //initiate the Phaser framework
 var game = new Phaser.Game(360, 640, Phaser.AUTO);
-
 game.state.add('GameState', GameState);
 game.state.start('GameState');
