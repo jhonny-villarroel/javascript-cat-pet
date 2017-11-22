@@ -12,7 +12,6 @@ var GameState = {
     
     this.game.load.image('backyard', 'assets/images/backyard.png');  
     this.game.load.image('box', 'assets/images/box.png'); 
-    this.game.load.image('apple', 'assets/images/apple.png');    
     this.game.load.image('candy', 'assets/images/candy.png');    
     this.game.load.image('rotate', 'assets/images/rotate.png');    
     this.game.load.image('toy', 'assets/images/rubber_duck.png');    
@@ -24,19 +23,22 @@ var GameState = {
     // voice command
      voiceCmd = new VoiceCMD();
      // subscribe voice command
-    voiceCmd.subscribeVoiceEvent(function(cmd){
+     // binding
+    var subscriptVoiceEvent = voiceCmd.subscribeVoiceEvent.bind(this);
   
-      console.log("the value of voice command is---> ",  cmd);
+    //voiceCmd.subscribeVoiceEvent(function(cmd){
+  subscriptVoiceEvent(function(cmd){
+      console.log("the value of voice command is-dddd-> ",  cmd);
       if(cmd.voiceCmd === "hello"){
          
          responsiveVoice.speak("Hellooo Jhonny.");
 
-         self.pet.animations.play('funnyfaces');
+         this.pet.animations.play('funnyfaces');
       } else if(cmd.voiceCmd === "look at me"){
         console.log("look at me");
 
          responsiveVoice.speak("OK");
-         self.pet.animations.play('funnyfaces');
+         this.pet.animations.play('funnyfaces');
          
      } else if (cmd.voiceCmd === "go to the box"){
          
@@ -85,18 +87,12 @@ var GameState = {
     this.pet.inputEnabled = true;
     this.pet.input.enableDrag();
 
-    this.box = this.game.add.sprite(60, 350, 'box');
+    this.box = this.game.add.sprite(72, 570, 'box');
     this.box.anchor.setTo(0.5);
     this.box.customParams = {health: 20};
     this.box.inputEnabled = true;
     this.box.events.onInputDown.add(this.pickItem, this);
-
-    this.apple = this.game.add.sprite(72, 570, 'apple');
-    this.apple.anchor.setTo(0.5);
-    this.apple.customParams = {health: 20};
-    this.apple.inputEnabled = true;
-    this.apple.events.onInputDown.add(this.pickItem, this);
-
+    
     this.candy = this.game.add.sprite(144, 570, 'candy');
     this.candy.anchor.setTo(0.5);
     this.candy.customParams = {health: -10, fun: 10};
@@ -114,7 +110,7 @@ var GameState = {
     this.rotate.inputEnabled = true;
     this.rotate.events.onInputDown.add(this.rotatePet, this);
 
-    this.buttons = [this.box, this.apple, this.candy, this.toy, this.rotate];
+    this.buttons = [this.box, this.candy, this.toy, this.rotate];
 
     //nothing selected
     this.selectedItem = null;
