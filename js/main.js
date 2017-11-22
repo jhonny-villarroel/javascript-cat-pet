@@ -3,13 +3,12 @@
 var voiceCmd = null;
 
 var cursors;
-
+var lookAtMe = false;
+var voiceCMDEval = null;
 var GameState = {
   //load the game assets before the game starts
   preload: function() {
-    // review if there is library
-    console.log("the module name is", VoiceCMD)
-    
+    // Load assets
     this.game.load.image('backyard', 'assets/images/backyard.png');  
     this.game.load.image('box', 'assets/images/box.png'); 
     this.game.load.image('candy', 'assets/images/candy.png');    
@@ -19,39 +18,17 @@ var GameState = {
 
     this.load.spritesheet('pet', 'assets/images/pet.png', 97, 83, 5, 1, 1); 
 
-    var self = this;
     // voice command
      voiceCmd = new VoiceCMD();
-     // subscribe voice command
-     // binding
-    var subscriptVoiceEvent = voiceCmd.subscribeVoiceEvent.bind(this);
-  
-    //voiceCmd.subscribeVoiceEvent(function(cmd){
-  subscriptVoiceEvent(function(cmd){
-      console.log("the value of voice command is-dddd-> ",  cmd);
-      if(cmd.voiceCmd === "hello"){
-         
-         responsiveVoice.speak("Hellooo Jhonny.");
+     /* Binding Consept*/
+     var bindEventVoiceCDM = voiceCMDEval.bind(this);
+     voiceCmd.subscribeVoiceEvent(bindEventVoiceCDM);
 
-         this.pet.animations.play('funnyfaces');
-      } else if(cmd.voiceCmd === "look at me"){
-        console.log("look at me");
-
-         responsiveVoice.speak("OK");
-         this.pet.animations.play('funnyfaces');
-         
-     } else if (cmd.voiceCmd === "go to the box"){
-         
-         responsiveVoice.speak("OK");
-          // self.pet.body.velocity.x = 150;
-        var petMovement = game.add.tween(self.pet);
-            petMovement.to({x: 325, y: 436}, 700);
-            petMovement.start();
-      }
-    });
-
-      // TODO MAKE in a class
-       subscribeHeadTrackEvent(function(event){
+     /** Events Concepts and Scope of this*/
+     var self = this;
+     subscribeHeadTrackEvent(function(event){
+         if(lookAtMe === false)
+            return;
          console.log("the Head location is--->" + event.direction);
          if(event.direction === "LEFT"){
             self.pet.angle = 45;
@@ -62,6 +39,7 @@ var GameState = {
          }
        });
   },
+
   //executed after everything is loaded
   create: function() {
     this.background = this.game.add.sprite(0,0, 'backyard');
@@ -92,7 +70,7 @@ var GameState = {
     this.box.customParams = {health: 20};
     this.box.inputEnabled = true;
     this.box.events.onInputDown.add(this.pickItem, this);
-    
+
     this.candy = this.game.add.sprite(144, 570, 'candy');
     this.candy.anchor.setTo(0.5);
     this.candy.customParams = {health: -10, fun: 10};
@@ -234,8 +212,6 @@ var GameState = {
   },
 
   reduceProperties: function() {
-    this.pet.customParams.health -= 20;
-    this.pet.customParams.fun -= 30;
     this.refreshStats();
   },
 
@@ -257,3 +233,38 @@ var GameState = {
 var game = new Phaser.Game(360, 640, Phaser.AUTO);
 game.state.add('GameState', GameState);
 game.state.start('GameState');
+
+/* Helper functions*/
+
+function movePet (gameRef, petMovement){
+  var promise = new Promise(function(resolve, reject) {
+  var tween = petMovement.to({x: 325, y: 436} , 700);
+              petMovement.start();
+              tween.onComplete.add(function(){
+                 resolve("END move");
+              }, this );  
+  });
+
+  return promise;
+}
+
+ /**** binding Concept ***/
+voiceCMDEval = function(cmd){
+        console.log("[DEBUG]the value of voice command: ",  cmd);
+        if(cmd.voiceCmd === "hello"){
+          responsiveVoice.speak("Hellooo Jhonny.");
+          this.pet.animations.play('funnyfaces');
+        } else if(cmd.voiceCmd === "look at me"){
+          console.log("look at me");
+          responsiveVoice.speak("OK");
+          this.pet.animations.play('funnyfaces');
+          lookAtMe = true;
+        } else if (cmd.voiceCmd === "go to the rock"){
+          responsiveVoice.speak("OK");
+          /****** Promise Consept*****/          
+          var petMovement = game.add.tween(this.pet);
+          movePet(game, petMovement).then(function(res){
+             responsiveVoice.speak("I am in the Rock!");
+          });
+        }
+    };

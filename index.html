@@ -16,14 +16,16 @@
 	</head>
 	<body>  
 		<!-- include the main game file -->
-		<div> 
+		<div id="headTracking" > 
 			<canvas id="compare" width="320" height="240" style="display:none"></canvas>
 			<video id="vid" autoplay loop width="360" height="240"></video>
 			<canvas id="overlay" width="320" height="240"></canvas>
 			<canvas id="debug" width="320" height="240"></canvas>
         </div >
+		
+		<script src="js/headTracking.js"></script>
 		<script src="js/voiceCommand.js"></script>
 		<script src="js/main.js"></script>
-		<script src="js/headTracking.js"></script>
+		
 	</body>
 </html>

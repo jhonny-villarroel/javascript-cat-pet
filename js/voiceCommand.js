@@ -1,3 +1,5 @@
+/*** Objects and Prototyping Consepts */
+
 
 var suscribers = {};
 // Create the event.
@@ -41,9 +43,9 @@ VoiceCMD.prototype._getCmds = function(){
                 self.evt.voiceCmd = "look at me"
                 document.dispatchEvent(self.evt);
             },
-             "go to the box": function(){
-                console.log("go to the box")
-                self.evt.voiceCmd = "go to the box"
+             "go to the rock": function(){
+                console.log("go to the rock")
+                self.evt.voiceCmd = "go to the rock"
                 document.dispatchEvent(self.evt);
             },
             "go to bed": function(){
@@ -51,11 +53,6 @@ VoiceCMD.prototype._getCmds = function(){
                 self.evt.voiceCmd = "go to bed"
                 document.dispatchEvent(self.evt);
             }
-
-
-
         };
-
-
 }
 
