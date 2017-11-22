@@ -20,7 +20,7 @@ var GameState = {
 
     // voice command
      voiceCmd = new VoiceCMD();
-     /* Binding Consept*/
+     /* Binding Concepts*/
      var bindEventVoiceCDM = voiceCMDEval.bind(this);
      voiceCmd.subscribeVoiceEvent(bindEventVoiceCDM);
 
@@ -261,7 +261,7 @@ voiceCMDEval = function(cmd){
           lookAtMe = true;
         } else if (cmd.voiceCmd === "go to the rock"){
           responsiveVoice.speak("OK");
-          /****** Promise Consept*****/          
+          /****** Promise Concepts*****/          
           var petMovement = game.add.tween(this.pet);
           movePet(game, petMovement).then(function(res){
              responsiveVoice.speak("I am in the Rock!");
